@@ -1,0 +1,275 @@
+version: "1"
+name: poe-trader-app
+language: rust
+package: poe_trader_app
+
+binaries:
+  # The overlay. Reads the clipboard on a hotkey, prices the item, draws a
+  # window over the game.
+  - name: poe-trader
+    kind: cli
+    config:
+      # ---------------------------------------------------------------
+      # Network. Every key here exists because the reference hardcodes it.
+      # ---------------------------------------------------------------
+      - name: network_enabled
+        type: bool
+        env: POE_NETWORK_ENABLED
+        flag: network-enabled
+        default: "true"
+        doc: >-
+          Master switch for all outbound traffic. False makes every request
+          fail before a socket opens. Use it to run the parser offline.
+
+      - name: block_unlisted_hosts
+        type: bool
+        env: POE_BLOCK_UNLISTED_HOSTS
+        flag: block-unlisted-hosts
+        default: "true"
+        doc: >-
+          Refuse any request whose host is not in allowed_hosts. The reference
+          hardcodes an allowlist in main/src/proxy.ts. This makes it config.
+
+      - name: allowed_hosts
+        type: string
+        env: POE_ALLOWED_HOSTS
+        flag: allowed-hosts
+        default: "www.pathofexile.com"
+        doc: >-
+          Comma separated hosts the app may reach. Default is one host. The
+          reference also ships regional domains and a private server at
+          api.exiledexchange2.dev. We ship neither.
+
+      - name: trade_base_url
+        type: string
+        env: POE_TRADE_BASE_URL
+        flag: trade-base-url
+        default: "https://www.pathofexile.com"
+        doc: >-
+          Base URL for the official trade API. Every trade path is built from
+          this. English realm only.
+
+      - name: api_latency_seconds
+        type: int
+        env: POE_API_LATENCY_SECONDS
+        flag: api-latency-seconds
+        default: "2"
+        doc: >-
+          Padding added to every rate limit window. GGG bans for violations,
+          so the limiter assumes the server clock runs ahead of ours by this
+          much. Raise it if you see 429 responses.
+
+      - name: poesessid
+        type: string
+        env: POE_SESSION_ID
+        flag: poesessid
+        doc: >-
+          The POESESSID cookie. Needed for search and fetch. Never log it and
+          never write it to disk in plain text.
+
+      # ---------------------------------------------------------------
+      # Game and window
+      # ---------------------------------------------------------------
+      - name: game
+        type: string
+        env: POE_GAME
+        flag: game
+        default: "poe2"
+        doc: Which game to parse for. Either poe1 or poe2.
+
+      - name: window_title
+        type: string
+        env: POE_WINDOW_TITLE
+        flag: window-title
+        default: "Path of Exile 2"
+        doc: Exact title of the game window the overlay attaches to.
+
+      - name: client_log_path
+        type: string
+        env: POE_CLIENT_LOG_PATH
+        flag: client-log-path
+        doc: >-
+          Path to Client.txt. The app tails it to learn the current league and
+          character. Empty disables the watcher.
+
+      # ---------------------------------------------------------------
+      # Data and state
+      # ---------------------------------------------------------------
+      - name: data_dir
+        type: string
+        env: POE_DATA_DIR
+        flag: data-dir
+        required: true
+        doc: Directory holding items.ndjson and stats.ndjson.
+
+      - name: config_dir
+        type: string
+        env: POE_CONFIG_DIR
+        flag: config-dir
+        default: "."
+        doc: Where user settings and overlay layout are stored.
+
+      # ---------------------------------------------------------------
+      # Behaviour
+      # ---------------------------------------------------------------
+      - name: price_check_hotkey
+        type: string
+        env: POE_PRICE_CHECK_HOTKEY
+        flag: price-check-hotkey
+        default: "Ctrl+D"
+        doc: Key that triggers a price check on the item under the cursor.
+
+      - name: restore_clipboard
+        type: bool
+        env: POE_RESTORE_CLIPBOARD
+        flag: restore-clipboard
+        default: "true"
+        doc: >-
+          Put the old clipboard back after reading the item. The app must copy
+          to read the item, which destroys whatever the user had.
+
+      - name: log_level
+        type: string
+        env: POE_LOG_LEVEL
+        flag: log-level
+        default: "info"
+        doc: One of debug, info, warn, error.
+
+  # Headless price check. Same core, no window. Used for tests and scripts.
+  - name: poe-trader-cli
+    kind: cli
+    config:
+      - name: network_enabled
+        type: bool
+        env: POE_NETWORK_ENABLED
+        flag: network-enabled
+        default: "true"
+        doc: Master switch for all outbound traffic.
+
+      - name: block_unlisted_hosts
+        type: bool
+        env: POE_BLOCK_UNLISTED_HOSTS
+        flag: block-unlisted-hosts
+        default: "true"
+        doc: Refuse any request whose host is not in allowed_hosts.
+
+      - name: allowed_hosts
+        type: string
+        env: POE_ALLOWED_HOSTS
+        flag: allowed-hosts
+        default: "www.pathofexile.com"
+        doc: Comma separated hosts the app may reach.
+
+      - name: trade_base_url
+        type: string
+        env: POE_TRADE_BASE_URL
+        flag: trade-base-url
+        default: "https://www.pathofexile.com"
+        doc: Base URL for the official trade API.
+
+      - name: api_latency_seconds
+        type: int
+        env: POE_API_LATENCY_SECONDS
+        flag: api-latency-seconds
+        default: "2"
+        doc: Padding added to every rate limit window.
+
+      - name: poesessid
+        type: string
+        env: POE_SESSION_ID
+        flag: poesessid
+        doc: The POESESSID cookie.
+
+      - name: game
+        type: string
+        env: POE_GAME
+        flag: game
+        default: "poe2"
+        doc: Which game to parse for. Either poe1 or poe2.
+
+      - name: data_dir
+        type: string
+        env: POE_DATA_DIR
+        flag: data-dir
+        required: true
+        doc: Directory holding items.ndjson and stats.ndjson.
+
+      - name: item_file
+        type: string
+        env: POE_ITEM_FILE
+        flag: item-file
+        doc: Read item text from this file instead of the clipboard.
+
+      - name: log_level
+        type: string
+        env: POE_LOG_LEVEL
+        flag: log-level
+        default: "info"
+        doc: One of debug, info, warn, error.
+
+  # Builds data/*.ndjson. Replaces 7623 lines of Python in the reference.
+  - name: poe-trader-datagen
+    kind: cli
+    config:
+      - name: network_enabled
+        type: bool
+        env: POE_NETWORK_ENABLED
+        flag: network-enabled
+        default: "true"
+        doc: Master switch for all outbound traffic.
+
+      - name: block_unlisted_hosts
+        type: bool
+        env: POE_BLOCK_UNLISTED_HOSTS
+        flag: block-unlisted-hosts
+        default: "true"
+        doc: Refuse any request whose host is not in allowed_hosts.
+
+      - name: allowed_hosts
+        type: string
+        env: POE_ALLOWED_HOSTS
+        flag: allowed-hosts
+        default: "www.pathofexile.com"
+        doc: Comma separated hosts the builder may reach.
+
+      - name: trade_base_url
+        type: string
+        env: POE_TRADE_BASE_URL
+        flag: trade-base-url
+        default: "https://www.pathofexile.com"
+        doc: Base URL used to pull the trade stat and item tables.
+
+      - name: api_latency_seconds
+        type: int
+        env: POE_API_LATENCY_SECONDS
+        flag: api-latency-seconds
+        default: "2"
+        doc: Padding added to every rate limit window.
+
+      - name: tables_dir
+        type: string
+        env: POE_TABLES_DIR
+        flag: tables-dir
+        required: true
+        doc: Directory holding the extracted game tables.
+
+      - name: out_dir
+        type: string
+        env: POE_OUT_DIR
+        flag: out-dir
+        required: true
+        doc: Where items.ndjson and stats.ndjson are written.
+
+      - name: game
+        type: string
+        env: POE_GAME
+        flag: game
+        default: "poe2"
+        doc: Which game to build data for. Either poe1 or poe2.
+
+      - name: log_level
+        type: string
+        env: POE_LOG_LEVEL
+        flag: log-level
+        default: "info"
+        doc: One of debug, info, warn, error.

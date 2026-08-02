@@ -1,0 +1,23 @@
+name: poe-trader-spec
+
+artifactStorePath: .forge/artifact-store.yaml
+
+# This repo emits nothing. It only proves the spec is well formed, so a broken
+# spec fails here and not in three downstream repos.
+build: []
+
+test:
+  # golden-configgen is pinned by tag. A tool that generates code for three
+  # binaries must not move under us between builds.
+  - name: validate
+    runner: go://generic-test-runner
+    spec:
+      command: go
+      args:
+        - run
+        - github.com/alexandremahdhaoui/golden-configgen/cmd/golden-configgen@v0.1.0
+        - --spec
+        - spec/poe-trader.v1.yaml
+        - --root
+        - .
+        - --dry-run
