@@ -49,6 +49,16 @@ binaries:
           Base URL for the official trade API. Every trade path is built from
           this. English realm only.
 
+      - name: user_agent
+        type: string
+        env: POE_USER_AGENT
+        flag: user-agent
+        doc: >-
+          The User-Agent header sent on every request. GGG answers 403 to a
+          request that carries none. Their API policy asks for a descriptive
+          one with contact details. Empty uses a default naming the tool and
+          its version.
+
       - name: api_latency_seconds
         type: int
         env: POE_API_LATENCY_SECONDS
@@ -167,6 +177,16 @@ binaries:
         default: "https://www.pathofexile.com"
         doc: Base URL for the official trade API.
 
+      - name: user_agent
+        type: string
+        env: POE_USER_AGENT
+        flag: user-agent
+        doc: >-
+          The User-Agent header sent on every request. GGG answers 403 to a
+          request that carries none. Their API policy asks for a descriptive
+          one with contact details. Empty uses a default naming the tool and
+          its version.
+
       - name: api_latency_seconds
         type: int
         env: POE_API_LATENCY_SECONDS
@@ -238,6 +258,16 @@ binaries:
         flag: trade-base-url
         default: "https://www.pathofexile.com"
         doc: Base URL used to pull the trade stat and item tables.
+
+      - name: user_agent
+        type: string
+        env: POE_USER_AGENT
+        flag: user-agent
+        doc: >-
+          The User-Agent header sent on every request. GGG answers 403 to a
+          request that carries none. Their API policy asks for a descriptive
+          one with contact details. Empty uses a default naming the tool and
+          its version.
 
       - name: api_latency_seconds
         type: int
