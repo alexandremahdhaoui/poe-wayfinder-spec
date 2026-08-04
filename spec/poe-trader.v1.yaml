@@ -80,6 +80,16 @@ binaries:
       # ---------------------------------------------------------------
       # Game and window
       # ---------------------------------------------------------------
+      - name: league
+        type: string
+        env: POE_LEAGUE
+        flag: league
+        default: "Standard"
+        doc: >-
+          Which league to search. The trade site keeps a separate index per
+          league, so a wrong one returns nothing rather than an error. The log
+          watcher can learn it from Client.txt.
+
       - name: game
         type: string
         env: POE_GAME
@@ -199,6 +209,16 @@ binaries:
         env: POE_SESSION_ID
         flag: poesessid
         doc: The POESESSID cookie.
+
+      - name: league
+        type: string
+        env: POE_LEAGUE
+        flag: league
+        default: "Standard"
+        doc: >-
+          Which league to search. The trade site keeps a separate index per
+          league, so a wrong one returns nothing rather than an error. The log
+          watcher can learn it from Client.txt.
 
       - name: game
         type: string
