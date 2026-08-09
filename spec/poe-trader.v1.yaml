@@ -94,15 +94,21 @@ binaries:
         type: string
         env: POE_GAME
         flag: game
-        default: "poe2"
-        doc: Which game to parse for. Either poe1 or poe2.
+        default: "auto"
+        doc: >-
+          poe1, poe2, or auto to read it from the open game window. auto keeps
+          reading it, so alt tabbing between the two games moves the parser,
+          the trade endpoint and the window the overlay attaches to.
 
       - name: window_title
         type: string
         env: POE_WINDOW_TITLE
         flag: window-title
-        default: "Path of Exile 2"
-        doc: Exact title of the game window the overlay attaches to.
+        default: ""
+        doc: >-
+          Exact title of the game window the overlay attaches to. Empty derives
+          it from the game, which is what auto detection needs. A title given
+          here pins the window and stops the overlay following the other game.
 
       - name: client_log_path
         type: string
@@ -119,15 +125,23 @@ binaries:
         type: string
         env: POE_DATA_DIR
         flag: data-dir
-        required: true
-        doc: Directory holding items.ndjson and stats.ndjson.
+        default: ""
+        doc: >-
+          Directory holding items.ndjson and stats.ndjson. Empty uses the
+          refreshed cache in config_dir, and failing that the copy built into
+          this binary. A directory named here always wins, and a bad one is a
+          startup failure rather than a silent fallback.
 
       - name: config_dir
         type: string
         env: POE_CONFIG_DIR
         flag: config-dir
-        default: "."
-        doc: Where user settings and overlay layout are stored.
+        default: ""
+        doc: >-
+          Where user settings, the overlay layout and the refreshed data cache
+          are stored. Empty picks the per user config directory for the
+          platform. A double clicked exe starts in an unpredictable working
+          directory, so a relative default would scatter settings files.
 
       # ---------------------------------------------------------------
       # Behaviour
@@ -231,8 +245,12 @@ binaries:
         type: string
         env: POE_DATA_DIR
         flag: data-dir
-        required: true
-        doc: Directory holding items.ndjson and stats.ndjson.
+        default: ""
+        doc: >-
+          Directory holding items.ndjson and stats.ndjson. Empty uses the
+          refreshed cache in config_dir, and failing that the copy built into
+          this binary. A directory named here always wins, and a bad one is a
+          startup failure rather than a silent fallback.
 
       - name: item_file
         type: string
