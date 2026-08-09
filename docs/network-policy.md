@@ -41,7 +41,7 @@ knows their names.
 
 ## Where the check lives
 
-`poe-trader-app/src/adapter/http_adapter.rs`. It is the only place in the
+`poe-wayfinder-app/src/adapter/http_adapter.rs`. It is the only place in the
 project that builds an HTTP client. Every other adapter takes it as a
 dependency.
 

@@ -1,4 +1,4 @@
-# CLAUDE.md — poe-trader-spec
+# CLAUDE.md — poe-wayfinder-spec
 
 Read `~/.claude/CLAUDE.md` then `../CLAUDE.md`. Both apply.
 
@@ -6,7 +6,7 @@ Read `~/.claude/CLAUDE.md` then `../CLAUDE.md`. Both apply.
 
 Declarations. No code and no build output.
 
-`spec/poe-trader.v1.yaml` is the source of truth for every config key. If a
+`spec/poe-wayfinder.v1.yaml` is the source of truth for every config key. If a
 value can be set by a user it is declared here and nowhere else.
 
 ## The rule
@@ -14,7 +14,7 @@ value can be set by a user it is declared here and nowhere else.
 **A hardcoded URL or tunable is a bug.** The whole point of this repo is that
 the reference hardcodes both.
 
-Before adding a constant to `poe-trader-app`, ask whether a user would ever
+Before adding a constant to `poe-wayfinder-app`, ask whether a user would ever
 want to change it. If yes it belongs here.
 
 ## Duplication across binaries is intended

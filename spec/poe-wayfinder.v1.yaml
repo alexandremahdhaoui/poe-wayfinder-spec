@@ -1,12 +1,12 @@
 version: "1"
-name: poe-trader-app
+name: poe-wayfinder-app
 language: rust
-package: poe_trader_app
+package: poe_wayfinder_app
 
 binaries:
   # The overlay. Reads the clipboard on a hotkey, prices the item, draws a
   # window over the game.
-  - name: poe-trader
+  - name: poe-wayfinder
     kind: cli
     config:
       # ---------------------------------------------------------------
@@ -170,7 +170,7 @@ binaries:
         doc: One of debug, info, warn, error.
 
   # Headless price check. Same core, no window. Used for tests and scripts.
-  - name: poe-trader-cli
+  - name: poe-wayfinder-cli
     kind: cli
     config:
       - name: network_enabled
@@ -266,7 +266,7 @@ binaries:
         doc: One of debug, info, warn, error.
 
   # Builds data/*.ndjson. Replaces 7623 lines of Python in the reference.
-  - name: poe-trader-datagen
+  - name: poe-wayfinder-datagen
     kind: cli
     config:
       - name: network_enabled

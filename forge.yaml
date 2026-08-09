@@ -1,4 +1,4 @@
-name: poe-trader-spec
+name: poe-wayfinder-spec
 
 artifactStorePath: .forge/artifact-store.yaml
 
@@ -17,7 +17,7 @@ test:
         - run
         - github.com/alexandremahdhaoui/golden-configgen/cmd/golden-configgen@v0.1.0
         - --spec
-        - spec/poe-trader.v1.yaml
+        - spec/poe-wayfinder.v1.yaml
         - --root
         - .
         - --dry-run
