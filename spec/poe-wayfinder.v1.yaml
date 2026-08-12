@@ -151,7 +151,71 @@ binaries:
         env: POE_PRICE_CHECK_HOTKEY
         flag: price-check-hotkey
         default: "Ctrl+D"
-        doc: Key that triggers a price check on the item under the cursor.
+        doc: >-
+          Key that triggers a price check on the item under the cursor. The
+          panel closes again when the pointer moves away.
+
+      - name: price_check_locked_hotkey
+        type: string
+        env: POE_PRICE_CHECK_LOCKED_HOTKEY
+        flag: price-check-locked-hotkey
+        default: "Ctrl+Alt+D"
+        doc: >-
+          Same check, but the panel stays open and takes focus so it can be
+          read and adjusted. Only Escape, a click outside or Dismiss closes it.
+          This is what Awakened PoE Trade and Exiled Exchange 2 both bind.
+          Empty turns it off.
+
+      - name: chat_commands
+        env: POE_CHAT_COMMANDS
+        type: string
+        flag: chat-commands
+        default: "F5=/hideout;F9=/exit"
+        doc: >-
+          Chat lines bound to keys, as key=text separated by semicolons. The
+          line is typed and sent. End it with a literal backslash n to type it
+          and leave it for you to finish. An entry with no key is ignored, so
+          a line can be kept here without a binding.
+
+      - name: item_link_hotkeys
+        env: POE_ITEM_LINK_HOTKEYS
+        type: string
+        flag: item-link-hotkeys
+        default: "Alt+W=wiki;Alt+B=poedb;Alt+C=craft of exile"
+        doc: >-
+          Keys that open the item under the cursor on a reference site, as
+          key=site separated by semicolons. The sites are wiki, poedb and
+          craft of exile. These open your browser rather than being fetched by
+          this app, so the network allowlist does not apply. Empty binds none.
+
+      - name: stash_searches
+        env: POE_STASH_SEARCHES
+        type: string
+        flag: stash-searches
+        default: ""
+        doc: >-
+          Stash search presets bound to keys, as key=text separated by
+          semicolons, for example "Ctrl+F1=chaos;Ctrl+F2=exalted". Pressing one
+          opens the stash search box and types the text. Empty binds nothing.
+
+      - name: overlay_hotkey
+        env: POE_OVERLAY_HOTKEY
+        type: string
+        flag: overlay-hotkey
+        default: "Shift+Space"
+        doc: >-
+          Grabs the panel that is already on screen so it can be clicked
+          without moving the mouse to it, and releases it again. Does nothing
+          when no panel is up. Empty turns it off.
+
+      - name: price_check_locked_alt_hotkey
+        type: string
+        env: POE_PRICE_CHECK_LOCKED_ALT_HOTKEY
+        flag: price-check-locked-alt-hotkey
+        default: "Ctrl+Shift+D"
+        doc: >-
+          A second binding for the locked check, easier to reach one handed.
+          Empty turns it off.
 
       - name: restore_clipboard
         type: bool
