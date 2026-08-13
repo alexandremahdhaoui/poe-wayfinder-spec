@@ -84,11 +84,12 @@ binaries:
         type: string
         env: POE_LEAGUE
         flag: league
-        default: "Standard"
+        default: ""
         doc: >-
           Which league to search. The trade site keeps a separate index per
-          league, so a wrong one returns nothing rather than an error. The log
-          watcher can learn it from Client.txt.
+          league, so a wrong one prices an item against a market it is not in.
+          Empty means the current league, read from the trade site's own league
+          list on startup. Naming one here pins it and stops the detection.
 
       - name: game
         type: string
@@ -292,11 +293,12 @@ binaries:
         type: string
         env: POE_LEAGUE
         flag: league
-        default: "Standard"
+        default: ""
         doc: >-
           Which league to search. The trade site keeps a separate index per
-          league, so a wrong one returns nothing rather than an error. The log
-          watcher can learn it from Client.txt.
+          league, so a wrong one prices an item against a market it is not in.
+          Empty means the current league, read from the trade site's own league
+          list on startup. Naming one here pins it and stops the detection.
 
       - name: game
         type: string
