@@ -59,5 +59,3 @@ changes its mind.
 
 `api_latency_seconds` pads every window because our clock is not the server's
 clock. Default is 2.
-
-See `../STUDY.md` section 2.
