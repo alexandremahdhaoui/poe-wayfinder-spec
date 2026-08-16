@@ -241,6 +241,20 @@ binaries:
           has claimed is read through the virtual Xbox pad it publishes rather
           than directly.
 
+      - name: gamepad_script
+        type: string
+        env: POE_GAMEPAD_SCRIPT
+        flag: gamepad-script
+        default: ""
+        doc: >-
+          A file of pad presses to play instead of reading a real controller.
+          Windows offers no way to synthesise a gamepad press, so this is the
+          only way a harness can drive the pad path. Each line is "wait N",
+          "press BUTTONS" or "hold BUTTONS N", counted in polls of the frame
+          loop rather than in seconds, so a run is the same on a fast machine
+          and a slow one. Empty means read the real pads, which is what a
+          player wants.
+
       - name: restore_clipboard
         type: bool
         env: POE_RESTORE_CLIPBOARD
