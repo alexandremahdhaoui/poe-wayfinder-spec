@@ -222,7 +222,7 @@ binaries:
         type: string
         env: POE_GAMEPAD_CHORD
         flag: gamepad-chord
-        default: ""
+        default: "L1+R1+Triangle"
         doc: >-
           Controller buttons that fire the locked price check, joined by plus,
           for example "LB+RB+Y" or "L1+R1+Triangle". Write it in whichever
@@ -230,8 +230,10 @@ binaries:
           BACK, START, UP, DOWN, LEFT, RIGHT, A, B, X and Y. PlayStation names
           are L1, R1, L2, R2, L3, R3, CREATE, SHARE, OPTIONS, UP, DOWN, LEFT,
           RIGHT, CROSS, CIRCLE, SQUARE and TRIANGLE. The two sets name the same
-          buttons, so LB and L1 are one chord. Empty turns it off, which is the
-          default. Windows offers no way to hide a pad button from the game, so
+          buttons, so LB and L1 are one chord. Holding it again closes the panel
+          and hands the game back the foreground, so a pad alone is enough.
+          Empty turns it off. Windows offers no way to hide a pad button from the
+          game, so
           the game acts on every button in the chord as well. Pick buttons the
           game does nothing with. Xbox pads are read through XInput and a
           DualSense or a DualShock 4 is read as a plain HID gamepad, so neither
